@@ -140,7 +140,7 @@ Snake::Direction Snake::GetTailDirection() {
     return Snake::DIRECTION_LAST_VALUE;
 }
 
-void Snake::Grow(const unsigned short int N)
+void Snake::Grow(int N)
 {
     // no more growing needed
     if(N==0) return;

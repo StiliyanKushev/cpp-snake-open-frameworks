@@ -47,7 +47,7 @@ public:
     /**
      * When called, the snake grows by N.
      */
-    void Grow(const unsigned short int N);
+    void Grow(int N);
 
     /**
      * Get's the direction to which the tail has
