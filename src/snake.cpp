@@ -15,7 +15,7 @@ static thread_local std::uniform_int_distribution dist(
 // we'll use that to make sure the player only
 // switches the direction once before the next 
 // move tick.
-static bool chanceDirectionLock = false;
+static bool changeDirectionLock = false;
 
 Snake::Snake() 
 {
@@ -65,13 +65,23 @@ void Snake::Move()
         break;
     }
 
+    // teleport head if outside of bounds
+    if(_head.col < 0)
+        _head.col = GAME_CELLS - 1;
+    if(_head.col > GAME_CELLS - 1)
+        _head.col = 0;
+    if(_head.row < 0)
+        _head.row = GAME_CELLS - 1;
+    if(_head.row > GAME_CELLS - 1)
+        _head.row = 0;
+
     // enable player moving again
-    chanceDirectionLock = false;
+    changeDirectionLock = false;
 }
 
 void Snake::Move(Direction dir) 
 {
-    if(chanceDirectionLock) return;
+    if(changeDirectionLock) return;
 
     // disallow opposite direction change
     if(dir == Snake::Right && _dir == Snake::Left) return;
@@ -82,7 +92,7 @@ void Snake::Move(Direction dir)
     _dir = dir;
 
     // disable player moving until next tick
-    chanceDirectionLock = true;
+    changeDirectionLock = true;
 }
 
 void Snake::Render()
@@ -197,12 +207,6 @@ void Snake::Grow(const unsigned short int N)
 }
 
 bool Snake::IsDead() {
-    // check if head is out of bounds
-    if(_head.row > GAME_CELLS) return true;
-    if(_head.row < 0) return true;
-    if(_head.col > GAME_CELLS) return true;
-    if(_head.col < 0) return true;
-
     // check if head is inside tail
     for(auto &t: _tail) {
         if(t.row == _head.row && t.col == _head.col)
