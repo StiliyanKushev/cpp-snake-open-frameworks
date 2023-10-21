@@ -1,4 +1,4 @@
-# cpp-tetris-open-frameworks
+# cpp-snake-open-frameworks
 
 Simple snake game written in C++.
 
